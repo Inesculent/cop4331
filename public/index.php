@@ -56,6 +56,7 @@ function http_status_for(string $code): int {
         'INVALID_EMAIL' => 422,
         'INVALID_NAME' => 422,
         'INVALID_PHONE' => 422,
+        'NOT_ENOUGH_ARGUMENTS' => 422,
         'DUPLICATE_EMAIL' => 409,
         'NOT_FOUND' => 404,
         'NOOP' => 200,

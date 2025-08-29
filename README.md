@@ -1,0 +1,58 @@
+
+The following is TEMPORARY and only serves as a rough outline of the project.
+------
+
+
+=========================
+API ENDPOINTS
+=========================
+
+HEALTH
+-------
+GET /health
+- 200 OK → service status
+
+USERS
+-------
+POST /users
+- 201 CREATED → user created
+- 422 INVALID_INPUT | INVALID_NAME | INVALID_EMAIL | INVALID_PASSWORD | USER_NOT_FOUND
+- 409 DUPLICATE_EMAIL
+- 500 DB_ERROR | INTERNAL
+
+GET /users/{id}
+- 200 OK → user object (without hashed_pw)
+- 404 USER_NOT_FOUND
+- 500 DB_ERROR
+
+PATCH /users/{id}
+- 200 OK → updated
+- 422 INVALID_PARAMETERS | INVALID_NAME | INVALID_EMAIL | INVALID_PASSWORD
+- 409 DUPLICATE_EMAIL
+- 404 USER_NOT_FOUND
+- 500 FAILED_TO_SAVE | DB_ERROR
+
+DELETE /users/{id}
+- 200 OK → {deleted:1}
+- 404 FAILED_TO_DELETE
+- 500 DB_ERROR
+
+CONTACTS (not implemented yet)
+-------------------------------
+POST /users/{uid}/contacts → 501 NOT_IMPLEMENTED
+GET /contacts/{cid}        → 501 NOT_IMPLEMENTED
+PATCH /contacts/{cid}      → 501 NOT_IMPLEMENTED
+DELETE /contacts/{cid}     → 501 NOT_IMPLEMENTED
+
+
+=========================
+ERROR CODES → HTTP STATUS
+=========================
+
+- 200 OK
+- 201 CREATED
+- 404 NOT_FOUND / USER_NOT_FOUND / FAILED_TO_DELETE
+- 409 DUPLICATE_EMAIL / DUPLICATE_CONTACT
+- 422 INVALID_INPUT / INVALID_NAME / INVALID_EMAIL / INVALID_PASSWORD / INVALID_PARAMETERS / INVALID_PHONE
+- 500 DB_ERROR / INTERNAL / FAILED_TO_SAVE
+- 501 NOT_IMPLEMENTED

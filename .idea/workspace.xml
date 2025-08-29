@@ -5,19 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfcd052c-e618-4814-a3de-48ef894a7a38" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/Result.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repos/ContactRepo.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repos/UserRepo.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/COP4331C.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/COP4331C.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/queries/user_queries/read_user.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/queries/user_queries/read_user.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/schema/contacts.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/schema/contacts.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sql/schema/users.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/schema/users.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db_manager.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/DBManager.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/load_sql.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/LoadSql.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repos/user_repo.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repos/ContactRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repos/ContactRepo.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +46,7 @@
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
@@ -97,7 +89,9 @@
       <workItem from="1756437803455" duration="1312000" />
       <workItem from="1756439562742" duration="30000" />
       <workItem from="1756440069679" duration="1353000" />
-      <workItem from="1756441503610" duration="1233000" />
+      <workItem from="1756441503610" duration="2294000" />
+      <workItem from="1756445453404" duration="1304000" />
+      <workItem from="1756447305448" duration="1010000" />
     </task>
     <servers />
   </component>
