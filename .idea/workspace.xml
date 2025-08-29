@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dfcd052c-e618-4814-a3de-48ef894a7a38" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Infrastructure/Result.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Repos/ContactRepo.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Repos/UserRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/COP4331C.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/COP4331C.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/queries/user_queries/read_user.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/queries/user_queries/read_user.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/schema/contacts.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/schema/contacts.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/schema/users.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/schema/users.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/db_manager.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/DBManager.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/load_sql.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/LoadSql.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repos/user_repo.php" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="PHP File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="$PROJECT_DIR$/../../php/php.exe">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/composer" />
+    </include_path>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="31wTFgoQUoiOmjD6x1Gp6zYgbwE" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/xampp/htdocs/project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql_aurora&quot;
+    ]
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-PS-252.23892.419" />
+        <option value="bundled-php-predefined-a98d8de5180a-c72577f2c82f-com.jetbrains.php.sharedIndexes-PS-252.23892.419" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dfcd052c-e618-4814-a3de-48ef894a7a38" name="Changes" comment="" />
+      <created>1756434033378</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1756434033378</updated>
+      <workItem from="1756434034882" duration="109000" />
+      <workItem from="1756434155125" duration="20000" />
+      <workItem from="1756434176236" duration="185000" />
+      <workItem from="1756436221744" duration="23000" />
+      <workItem from="1756436270733" duration="31000" />
+      <workItem from="1756436450689" duration="291000" />
+      <workItem from="1756436891595" duration="826000" />
+      <workItem from="1756437803455" duration="1312000" />
+      <workItem from="1756439562742" duration="30000" />
+      <workItem from="1756440069679" duration="1353000" />
+      <workItem from="1756441503610" duration="1233000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

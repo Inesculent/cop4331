@@ -1,3 +1,8 @@
-SELECT uid, name, email, hashed_pw
+SELECT
+    uid AS id,
+    name,
+    email,
+    hashed_pw,
+    created_at
 FROM users
-WHERE email = :email;
+WHERE uid = :id;

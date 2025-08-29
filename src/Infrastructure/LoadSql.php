@@ -1,10 +1,13 @@
 <?php
 
+namespace App\Infrastructure;
+use RuntimeException;
 
-class loadSql
+class LoadSql
 {
     private string $root;
     private array $cache = [];
+
 
     public function __construct(string $sqlRoot)
     {

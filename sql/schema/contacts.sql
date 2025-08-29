@@ -4,9 +4,8 @@ CREATE TABLE IF NOT EXISTS contacts (
     name VARCHAR(255) NOT NULL,
     phone VARCHAR(32),
     email VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (cid),
-
-    FOREIGN KEY (uid) REFERENCES users(uid),
 
     -- If a user is deleted, or their uid changes somehow, then update contacts to match
     CONSTRAINT alter_user

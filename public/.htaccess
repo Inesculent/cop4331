@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteBase /project/public/
+
+# Serve real files/folders as-is
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Otherwise route everything to index.php
+RewriteRule ^ index.php [QSA,L]

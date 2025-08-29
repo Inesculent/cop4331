@@ -1,6 +1,10 @@
 <?php
 
-class DB {
+namespace App\Infrastructure;
+use PDO;
+
+// Creates helper functions for our Repos
+class DBManager {
     private PDO $pdo;
 
     public function __construct(array $cfg) {
