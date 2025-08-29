@@ -3,16 +3,16 @@
 ------
 
 
-API ENDPOINTS
-==
+# API ENDPOINTS
 
-HEALTH
--------
+
+# HEALTH
+
 GET /health
 - 200 OK → service status
 
-USERS
--------
+# USERS
+
 POST /users
 - 201 CREATED → user created
 - 422 INVALID_INPUT | INVALID_NAME | INVALID_EMAIL | INVALID_PASSWORD | USER_NOT_FOUND
@@ -36,16 +36,15 @@ DELETE /users/{id}
 - 404 FAILED_TO_DELETE
 - 500 DB_ERROR
 
-CONTACTS (not implemented yet)
--------------------------------
+# CONTACTS (not implemented yet)
+
 - POST /users/{uid}/contacts → 501 NOT_IMPLEMENTED
 - GET /contacts/{cid}        → 501 NOT_IMPLEMENTED
 - PATCH /contacts/{cid}      → 501 NOT_IMPLEMENTED
 - DELETE /contacts/{cid}     → 501 NOT_IMPLEMENTED
 
 
-ERROR CODES → HTTP STATUS
-==
+# ERROR CODES → HTTP STATUS
 
 - 200 OK
 - 201 CREATED
