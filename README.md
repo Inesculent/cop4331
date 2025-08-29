@@ -1,11 +1,10 @@
 
-The following is TEMPORARY and only serves as a rough outline of the project.
+*The following is TEMPORARY and only serves as rough documentation for the developers of this project.*
 ------
 
 
-=========================
 API ENDPOINTS
-=========================
+==
 
 HEALTH
 -------
@@ -39,15 +38,14 @@ DELETE /users/{id}
 
 CONTACTS (not implemented yet)
 -------------------------------
-POST /users/{uid}/contacts → 501 NOT_IMPLEMENTED
-GET /contacts/{cid}        → 501 NOT_IMPLEMENTED
-PATCH /contacts/{cid}      → 501 NOT_IMPLEMENTED
-DELETE /contacts/{cid}     → 501 NOT_IMPLEMENTED
+- POST /users/{uid}/contacts → 501 NOT_IMPLEMENTED
+- GET /contacts/{cid}        → 501 NOT_IMPLEMENTED
+- PATCH /contacts/{cid}      → 501 NOT_IMPLEMENTED
+- DELETE /contacts/{cid}     → 501 NOT_IMPLEMENTED
 
 
-=========================
 ERROR CODES → HTTP STATUS
-=========================
+==
 
 - 200 OK
 - 201 CREATED
