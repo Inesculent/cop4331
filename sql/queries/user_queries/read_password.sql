@@ -2,6 +2,6 @@ SELECT
     uid AS id,
     name,
     email,
-    created_at
+    hashed_pw
 FROM users
 WHERE uid = :id;

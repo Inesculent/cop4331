@@ -48,6 +48,10 @@ function not_found(): void {
     send(['status' => 'error', 'code' => 'NOT_FOUND', 'message' => 'Route not found'], 404);
 }
 
+function not_allowed(): void {
+    send(['status' => 'error', 'code' => 'NOT_ALLOWED', 'message' => 'Method not allowed'], 405);
+}
+
 // These are our http status error codes. I'm not a big fan of hard coding it, but should be fine in this use case.
 function http_status_for(string $code): int {
     static $map = [
@@ -62,6 +66,9 @@ function http_status_for(string $code): int {
         'NOOP' => 200,
         'DB_ERROR' => 500,
         'INTERNAL' => 500,
+        'PAYLOAD_TOO_LARGE' => 413,
+        'INVALID_JSON' => 400,
+        'METHOD_NOT_ALLOWED' => 405,
     ];
     return $map[$code] ?? 400;
 }
@@ -79,6 +86,8 @@ function send_result(Result $res, int $okStatus = 200): void {
         ], $status);
     }
 }
+
+
 
 // To fix the path
 $method   = $_SERVER['REQUEST_METHOD'] ?? 'GET';
@@ -130,11 +139,30 @@ try {
         not_found();
     }
 
+    if ($parts === ['auth', 'login']) {
+        if ($method == 'POST') {
+
+            $body = read_json_body();
+            $email = (string)($body['email'] ?? '');
+            $password = (string)($body['password'] ?? '');
+
+            $res = $userRepo->verifyUser($email, $password);
+            send_result($res,200);
+
+        }
+        else{
+            not_allowed();
+        }
+
+
+
+    }
+
     // /users/{uid}
     if (count($parts) === 2 && $parts[0] === 'users') {
         $uid = (int) $parts[1];
 
-        if ($method === 'GET')    { send_result($userRepo->readUser($uid), 200); }
+        if ($method === 'GET') { send_result($userRepo->readUser($uid, true), 200);}
         if ($method === 'PATCH')  { send_result($userRepo->updateUser($uid, read_json_body()), 200); }
         if ($method === 'DELETE') { send_result($userRepo->deleteUser($uid), 200); }
 

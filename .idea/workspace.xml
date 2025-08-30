@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dfcd052c-e618-4814-a3de-48ef894a7a38" name="Changes" comment="" />
+    <list default="true" id="dfcd052c-e618-4814-a3de-48ef894a7a38" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/sql/queries/user_queries/get_uid_by_email.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sql/queries/user_queries/read_password.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/queries/user_queries/read_user.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/queries/user_queries/read_user.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repos/ContactRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repos/ContactRepo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repos/UserRepo.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repos/UserRepo.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -89,6 +97,10 @@
       <workItem from="1756447305448" duration="1010000" />
       <workItem from="1756449268003" duration="190000" />
       <workItem from="1756450000755" duration="94000" />
+      <workItem from="1756504046515" duration="1612000" />
+      <workItem from="1756519268416" duration="1510000" />
+      <workItem from="1756521285400" duration="279000" />
+      <workItem from="1756521757600" duration="198000" />
     </task>
     <servers />
   </component>

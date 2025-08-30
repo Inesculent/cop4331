@@ -85,6 +85,8 @@ class ContactRepo{
     }
 
     public function listContacts(): Result{
+
+        $path = 'queries/contact_queries/list_contacts';
         return Result::err('NOT_IMPLEMENTED','Pending');
     }
 

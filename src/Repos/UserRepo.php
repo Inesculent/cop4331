@@ -74,9 +74,27 @@ class UserRepo{
                 return Result::err('USER_NOT_FOUND', 'User not found', ['field' => 'uid']);
             }
 
-            // Remove hashed password for safety
             $user = $rows[0];
-            unset($user['hashed_pw']);
+
+            return Result::ok(['user' => $user]);
+        }
+        catch (\PDOException $e) {
+            return Result::err('DB_ERROR', 'Database failure');
+        }
+
+    }
+
+    private function readPassword(int $uid): Result{
+        $path = 'queries/user_queries/read_password.sql';
+        $sql = $this->sql->load($path);
+
+        try {
+            $rows = $this->db->rows($sql, ['id' => $uid]);
+            if (empty($rows)) {
+                return Result::err('USER_NOT_FOUND', 'User not found', ['field' => 'uid']);
+            }
+
+            $user = $rows[0];
 
             return Result::ok(['user' => $user]);
         }
@@ -188,6 +206,67 @@ class UserRepo{
             return Result::err('DB_ERROR', 'Database failure');
         }
 
+    }
+
+
+    // Takes in raw email and raw password and authenticates a user
+    public function verifyUser(String $email, String $password) : Result{
+
+        $email = trim(strtolower($email));
+
+        if ($email === '' || $password === '') {
+            return Result::err('INVALID_PARAMETERS', 'No parameters passed.', ['field' => 'parameters']);
+        }
+
+        $uid = $this->getUID($email);
+
+        if ($uid <= 0){
+            return Result::err('INVALID_CREDENTIALS', 'Invalid email or password', ['field' => 'uid']);
+        }
+
+        $res = $this->readPassword($uid);
+
+        //If we had an issue with finding the user
+        if (!$res->ok) {
+            if ($res->code === 'USER_NOT_FOUND'){
+                return Result::err('INVALID_CREDENTIALS', 'Invalid email or password', ['field' => 'uid']);
+            }
+            return $res;
+        }
+
+        //Create the user object from res
+        $user = $res->data['user'] ?? [];
+
+        // Use built in php password_verify to verify the passwords
+        if (!password_verify($password, $user['hashed_pw'])) {
+            return Result::err('INVALID_PASSWORD', 'Invalid email or password', ['field' => 'uid']);
+        }
+
+        unset($user['hashed_pw']);
+
+        return Result::ok(['user' => $user]);
+
+    }
+
+    private function getUID(string $email): int
+    {
+
+
+        $path = 'queries/user_queries/get_uid_by_email.sql';
+        $sql  = $this->sql->load($path);
+
+        try {
+            // Prefer a single-row helper if you have it; otherwise take first row.
+            $rowset = $this->db->rows($sql, ['email' => $email]);
+            if (empty($rowset)) {
+                return 0;
+            }
+            // Expect column name 'uid'
+            return (int)($rowset[0]['uid'] ?? 0);
+        } catch (\PDOException $e) {
+            error_log('getUID DB error: ' . $e->getMessage());
+            return 0;
+        }
     }
 
     // See if the email already exists (can't make duplicate users)
