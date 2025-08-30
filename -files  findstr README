@@ -1,5 +1,0 @@
-[33m297d7cc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Created robust user authentication system using JWT tokens. Finished CRUD API endpoints for contacts. Rewrote user API endpoints for increased security and clarity. Fixed several routing issues. Removed unnecessary packages in the .gitignore. Updated readme to reflect these changes in greater detail.
-[33m9740444[m Added robust user verification system with independent API
-[33m3b3d950[m Testing webhook on github
-[33m181b8d0[m Fixed readme
-[33m4f81499[m Added README.md. Wrote half of the ContactRepo functions. Will hook it up with index.php on the next commit.

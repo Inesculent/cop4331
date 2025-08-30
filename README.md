@@ -67,9 +67,9 @@ POST /users
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password123"
+  "name": "Rob L",
+  "email": "tuff@example.com",
+  "password": "COP4331"
 }
 ```
 **Responses:**
@@ -83,8 +83,8 @@ POST /auth/login
 Content-Type: application/json
 
 {
-  "email": "john@example.com",
-  "password": "password123"
+  "email": "tuff@example.com",
+  "password": "COP4331"
 }
 ```
 **Responses:**
@@ -156,7 +156,7 @@ Content-Type: application/json
 
 {
   "name": "Updated Name",
-  "phone": "555-999-8888",
+  "phone": "111-222-3333",
   "email": "updated@example.com"
 }
 ```
@@ -292,16 +292,3 @@ sql/
 
 public/
 └── index.php                 # Application entry point
-```
-
-## Contributing
-
-1. Follow PSR-12 coding standards
-2. Use consistent function formatting: `public function name() {`
-3. Add type declarations to all functions
-4. Include comprehensive error handling
-5. Write descriptive commit messages
-
-## License
-
-This project is for educational/development purposes.
