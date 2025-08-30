@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Infrastructure;
 use RuntimeException;
@@ -9,13 +10,11 @@ class LoadSql
     private array $cache = [];
 
 
-    public function __construct(string $sqlRoot)
-    {
+    public function __construct(string $sqlRoot) {
         $this->root = rtrim($sqlRoot, '/');
     }
 
-    public function load(string $rPath)
-    {
+    public function load(string $rPath) {
         if (!isset($this->cache[$rPath])) {
             // Construct the path
             $path = $this->root . '/' . ltrim($rPath, '/');

@@ -4,7 +4,8 @@
   "type": "project",
   "require": {
     "ext-pdo": "*",
-    "ext-mbstring": "*"
+    "ext-mbstring": "*",
+    "firebase/php-jwt": "^6.9"
   },
   "autoload": {
     "psr-4": {

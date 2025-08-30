@@ -1,17 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repos;
 use App\Infrastructure\LoadSql;
 use App\Infrastructure\Result;
 use App\Infrastructure\DBManager;
-class UserRepo{
+class UserRepo {
     public function __construct(
         private readonly DBManager $db,
         private readonly LoadSql $sql
     ) {}
 
-    public function createUser(string $name, string $email, string $password): Result
-    {
+    public function createUser(string $name, string $email, string $password): Result {
         // Normalize
         $name = trim($name);
         $email = strtolower(trim($email));
@@ -64,7 +64,7 @@ class UserRepo{
         }
     }
 
-    public function readUser(int $uid): Result{
+    public function readUser(int $uid): Result {
         $path = 'queries/user_queries/read_user.sql';
         $sql = $this->sql->load($path);
 
@@ -84,7 +84,7 @@ class UserRepo{
 
     }
 
-    private function readPassword(int $uid): Result{
+    private function readPassword(int $uid): Result {
         $path = 'queries/user_queries/read_password.sql';
         $sql = $this->sql->load($path);
 
@@ -110,7 +110,7 @@ class UserRepo{
         -H "Content-Type: application/json" \
         -d '{"email":"new@example.com"}'
      */
-    public function updateUser(int $uid, array $patch): Result{
+    public function updateUser(int $uid, array $patch): Result {
 
         // Validate data from the frontend
         $allowed = ['name', 'email', 'password'];
@@ -183,7 +183,7 @@ class UserRepo{
 
 
     // Function to delete a user
-    public function deleteUser(int $uid) : Result{
+    public function deleteUser(int $uid): Result {
 
         // Define our path
         $path = 'queries/user_queries/delete_user.sql';
@@ -210,7 +210,7 @@ class UserRepo{
 
 
     // Takes in raw email and raw password and authenticates a user
-    public function verifyUser(String $email, String $password) : Result{
+    public function verifyUser(string $email, string $password): Result {
 
         $email = trim(strtolower($email));
 
@@ -248,8 +248,7 @@ class UserRepo{
 
     }
 
-    private function getUID(string $email): int
-    {
+    private function getUID(string $email): int {
 
 
         $path = 'queries/user_queries/get_uid_by_email.sql';
@@ -270,8 +269,7 @@ class UserRepo{
     }
 
     // See if the email already exists (can't make duplicate users)
-    private function isSQLDupe(\PDOException $e, ?string $keyName = null): bool
-    {
+    private function isSQLDupe(\PDOException $e, ?string $keyName = null): bool {
         // errorInfo = [sqlstate, driver_error_code, driver_message]
         if (($e->errorInfo[0] ?? '') !== '23000') return false;
         if ($keyName === null) return true;
