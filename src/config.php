@@ -24,3 +24,4 @@ return [
 
     'sql_root' => __DIR__ . '/../sql',
 ];
+

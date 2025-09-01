@@ -30,9 +30,7 @@ final class AuthService {
         return JWT::encode($payload, $this->cfg['auth']['jwt_secret'], 'HS256');
     }
 
-    /**
-     * Validates if a token is valid and not revoked
-     */
+    // Validates a token
     public function validateToken(string $token): ?object {
         try {
             $payload = JWT::decode($token, new Key($this->cfg['auth']['jwt_secret'], 'HS256'));
@@ -51,14 +49,13 @@ final class AuthService {
             }
             
             return $payload;
-        } catch (\Throwable $e) {
+        } 
+        catch (\Throwable $e) {
             return null;
         }
     }
 
-    /**
-     * Revokes an access token by adding it to the blacklist
-     */
+    // Add token to blacklist table
     public function revokeAccessToken(string $token): bool {
         try {
             $payload = JWT::decode($token, new Key($this->cfg['auth']['jwt_secret'], 'HS256'));
@@ -77,7 +74,7 @@ final class AuthService {
             }
             
             // Add to revoked tokens table
-            $sql = $this->loadSql->load('token_queries/revoke_token');
+            $sql = $this->loadSql->load('queries/token_queries/revoke_token.sql');
             $this->db->exec($sql, [
                 'jti' => $jti,
                 'expires_at' => $exp
@@ -89,31 +86,28 @@ final class AuthService {
         }
     }
 
-    /**
-     * Checks if a token is in the revoked tokens blacklist
-     */
+    // Checks for tokens in the blacklist
     private function isTokenRevoked(string $jti): bool {
         if (empty($jti)) {
             return true;
         }
         
         try {
-            $sql = $this->loadSql->load('token_queries/check_revoked_token');
+            $sql = $this->loadSql->load('queries/token_queries/check_revoked_token.sql');
             $result = $this->db->rows($sql, ['jti' => $jti]);
             
             return !empty($result) && ($result[0]['is_revoked'] ?? 0) > 0;
-        } catch (\Throwable $e) {
+        } 
+        catch (\Throwable $e) {
             // If we can't check, assume it's revoked for security
             return true;
         }
     }
 
-    /**
-     * Cleanup expired tokens from the blacklist (should be called periodically)
-     */
+   // Clean up expired tokens (I'll need to figure out a better solution for this later)
     public function cleanupExpiredTokens(): int {
         try {
-            $sql = $this->loadSql->load('token_queries/cleanup_expired_tokens');
+            $sql = $this->loadSql->load('queries/token_queries/cleanup_expired_tokens.sql');
             return $this->db->exec($sql);
         } catch (\Throwable $e) {
             return 0;

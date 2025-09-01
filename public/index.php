@@ -189,9 +189,21 @@ try {
             $password = (string)($body['password'] ?? '');
 
             $res = $userRepo->verifyUser($email, $password);
+
+            // This is very bad practice, but it should be fine for this project.
+
+            $rand = rand(0,10);
+            if ($rand === 0) {
+                $authService->cleanupExpiredTokens();
+            }
             if ($res->ok) {
                 $uid = (int)($res->data['user']['id'] ?? 0);
                 if ($uid > 0) {
+                    // Revoke existing token if user is already logged in
+                    if (!empty($_COOKIE['auth'])) {
+                        $authService->revokeAccessToken($_COOKIE['auth']);
+                    }
+                    
                     $token = $authService->issueAccessToken($uid);
                     $exp = time() + (int)$config['auth']['access_ttl'];
                     
@@ -234,7 +246,8 @@ try {
             $token = null;
             if (!empty($_COOKIE['auth'])) {
                 $token = $_COOKIE['auth'];
-            } else {
+            } 
+            else {
                 $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
                 if (preg_match('/^Bearer\s+(.+)$/i', $authHeader, $matches)) {
                     $token = $matches[1];
@@ -258,14 +271,16 @@ try {
                     'status' => 'ok',
                     'message' => 'Successfully logged out'
                 ], 200);
-            } else {
+            } 
+            else {
                 send([
                     'status' => 'error',
                     'code' => 'LOGOUT_FAILED',
                     'message' => 'Failed to logout'
                 ], 400);
             }
-        } else {
+        } 
+        else {
             not_allowed();
         }
     }
