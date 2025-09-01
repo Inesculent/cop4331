@@ -34,8 +34,8 @@ $userRepo = new UserRepo($db, $sql);
 $contactRepo = new ContactRepo($db, $sql);
 
 // --- Auth wiring (JWT) ---
-$authService = new AuthService($config);
-$authMw = new AuthMiddleware($config);
+$authService = new AuthService($config, $db, $sql);
+$authMw = new AuthMiddleware($config, $authService);
 $AUTH_UID = $authMw->authenticate();
 $GLOBALS['AUTH_UID'] = $AUTH_UID;
 
@@ -195,19 +195,19 @@ try {
                     $token = $authService->issueAccessToken($uid);
                     $exp = time() + (int)$config['auth']['access_ttl'];
                     
-                    // Set cookie with explicit domain for local testing
+                    // Set cookie with explicit domain for testing
                     $cookieOptions = [
                         'expires'  => $exp,
                         'path'     => '/',
                         'secure'   => $config['dev']['secure_cookies'],
-                        'httponly' => !$config['dev']['show_cookies'], // false for testing = visible in devtools
+                        'httponly' => !$config['dev']['show_cookies'], 
                         'samesite' => 'Lax',
                     ];
                     
-                    // Don't set domain for localhost to ensure Postman compatibility
+         
                     $cookieSet = setcookie('auth', $token, $cookieOptions);
                     
-                    // For development: also return token in response body for easy access
+                    // For development
                     if ($config['dev']['show_cookies']) {
                         $res->data['auth_token'] = $token;
                         $res->data['cookie_set'] = $cookieSet;
@@ -225,6 +225,51 @@ try {
         }
     }
 
+    // /auth/logout - PROTECTED: revoke te current token
+    if ($parts === ['auth', 'logout']) {
+        if ($method === 'POST') {
+            $uid = require_auth(); // Make sure the user is logged in
+            
+            // Get our current token in order to revoke it
+            $token = null;
+            if (!empty($_COOKIE['auth'])) {
+                $token = $_COOKIE['auth'];
+            } else {
+                $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+                if (preg_match('/^Bearer\s+(.+)$/i', $authHeader, $matches)) {
+                    $token = $matches[1];
+                }
+            }
+            
+            if ($token && $authService->revokeAccessToken($token)) {
+                // Clear the auth cookie if it exists
+                if (!empty($_COOKIE['auth'])) {
+                    setcookie('auth', '', [
+                        'expires' => time() - 3600,
+                        'path' => '/',
+                        'domain' => '',
+                        'secure' => $config['dev']['secure_cookies'],
+                        'httponly' => true,
+                        'samesite' => 'Lax'
+                    ]);
+                }
+                
+                send([
+                    'status' => 'ok',
+                    'message' => 'Successfully logged out'
+                ], 200);
+            } else {
+                send([
+                    'status' => 'error',
+                    'code' => 'LOGOUT_FAILED',
+                    'message' => 'Failed to logout'
+                ], 400);
+            }
+        } else {
+            not_allowed();
+        }
+    }
+
     // /users/{uid} - PROTECTED: uid must match token subject
     if (count($parts) === 2 && $parts[0] === 'users') {
         $uidPath = (int) $parts[1];
@@ -233,7 +278,7 @@ try {
         if ($method === 'GET')   { send_result($userRepo->readUser($uidPath), 200); }
         if ($method === 'PATCH') { send_result($userRepo->updateUser($uidPath, read_json_body()), 200); }
         if ($method === 'DELETE'){ send_result($userRepo->deleteUser($uidPath), 200); }
-
+        
         not_found();
     }
 

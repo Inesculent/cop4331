@@ -91,6 +91,22 @@ Content-Type: application/json
 - `200 OK` → Login successful, sets auth cookie and returns token
 - `422 Unprocessable Entity` → Invalid credentials
 
+
+#### Logout (Protected)
+```
+POST /auth/logout
+Authorization: Bearer {jwt_token}
+Content-Type: application/json
+
+{}
+```
+**Responses:**
+- `200 OK` → Successfully logged out, token revoked and cookie cleared
+- `400 Bad Request` → Failed to logout (invalid token)
+- `401 Unauthorized` → Authentication required
+
+**Note:** This endpoint revokes the current access token by adding it to a blacklist, making it immediately invalid for future requests. If using cookie authentication, the auth cookie is automatically cleared.
+
 ### User Management (Protected)
 
 All user endpoints require authentication (cookie or Bearer token).

@@ -3,24 +3,21 @@ declare(strict_types=1);
 
 namespace App\Infrastructure;
 
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-
+// Middleware for JWT authentication
 final class AuthMiddleware {
-    public function __construct(private array $cfg) {}
+    public function __construct(
+        private array $cfg,
+        private AuthService $authService
+    ) {}
 
     public function authenticate(): ?int {
         $token = $this->extractToken();
         if (!$token) return null;
 
-        try {
-            $decoded = JWT::decode($token, new Key($this->cfg['auth']['jwt_secret'], 'HS256'));
-            if (($decoded->iss ?? null) !== $this->cfg['auth']['issuer']) return null;
-            if (($decoded->aud ?? null) !== $this->cfg['auth']['audience']) return null;
-            return (int)($decoded->sub ?? 0);
-        } catch (\Throwable $e) {
-            return null;
-        }
+        $payload = $this->authService->validateToken($token);
+        if (!$payload) return null;
+        
+        return (int)($payload->sub ?? 0);
     }
 
     private function extractToken(): ?string {
