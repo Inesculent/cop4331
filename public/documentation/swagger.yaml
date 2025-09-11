@@ -1,0 +1,331 @@
+swagger: "2.0"
+info:
+  title: Contacts API
+  description: API for user authentication and contact management (all routes are from index.php).
+  version: "1.0.0"
+  contact:
+    email: jaksonzapataponte@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+schemes:
+  - http
+  - https
+basePath: /
+consumes:
+  - application/json
+produces:
+  - application/json
+
+tags:
+  - name: Auth
+    description: Login, register, logout
+  - name: Users
+    description: User management
+  - name: Contacts
+    description: CRUD and search for contacts
+
+securityDefinitions:
+  BearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: |
+      Use: `Authorization: Bearer <jwt>`
+
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        "422":
+          description: Invalid credentials
+          schema:
+            $ref: "#/definitions/Error"
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Logout
+      security: [{ BearerAuth: [] }]
+      responses:
+        "200":
+          description: Successfully logged out
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/Error"
+
+  /users:
+    post:
+      tags: [Auth]
+      summary: Register user
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/RegisterRequest"
+      responses:
+        "201":
+          description: User created
+          schema:
+            $ref: "#/definitions/User"
+        "409":
+          description: Email already exists
+          schema:
+            $ref: "#/definitions/Error"
+        "422":
+          description: Validation errors
+          schema:
+            $ref: "#/definitions/Error"
+
+  /users/{uid}:
+    get:
+      tags: [Users]
+      summary: Get user profile
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - $ref: "#/parameters/UidPath"
+      responses:
+        "200":
+          description: User profile
+          schema:
+            $ref: "#/definitions/User"
+        "401":
+          description: Unauthorized
+    patch:
+      tags: [Users]
+      summary: Update user
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - $ref: "#/parameters/UidPath"
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserUpdate"
+      responses:
+        "200":
+          description: User updated
+          schema:
+            $ref: "#/definitions/User"
+    delete:
+      tags: [Users]
+      summary: Delete user
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - $ref: "#/parameters/UidPath"
+      responses:
+        "204":
+          description: User deleted
+
+  /users/{uid}/contacts:
+    get:
+      tags: [Contacts]
+      summary: List or search contacts
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - $ref: "#/parameters/UidPath"
+        - in: query
+          name: q
+          type: string
+          description: Optional search string
+      responses:
+        "200":
+          description: List of contacts
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Contact"
+    post:
+      tags: [Contacts]
+      summary: Add contact
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - $ref: "#/parameters/UidPath"
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/ContactCreate"
+      responses:
+        "201":
+          description: Contact created
+          schema:
+            $ref: "#/definitions/Contact"
+
+  /contacts/{cid}:
+    get:
+      tags: [Contacts]
+      summary: Get specific contact
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - $ref: "#/parameters/CidPath"
+      responses:
+        "200":
+          description: Contact info
+          schema:
+            $ref: "#/definitions/Contact"
+    patch:
+      tags: [Contacts]
+      summary: Update contact
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - $ref: "#/parameters/CidPath"
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/ContactUpdate"
+      responses:
+        "200":
+          description: Contact updated
+          schema:
+            $ref: "#/definitions/Contact"
+    delete:
+      tags: [Contacts]
+      summary: Delete contact
+      security: [{ BearerAuth: [] }]
+      parameters:
+        - $ref: "#/parameters/CidPath"
+      responses:
+        "204":
+          description: Contact deleted
+
+parameters:
+  UidPath:
+    name: uid
+    in: path
+    required: true
+    type: integer
+    format: int64
+    description: User ID
+  CidPath:
+    name: cid
+    in: path
+    required: true
+    type: integer
+    format: int64
+    description: Contact ID
+
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: Rob L
+      email:
+        type: string
+        example: tuff@example.com
+      created_at:
+        type: string
+        format: date-time
+
+  UserUpdate:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+
+  Contact:
+    type: object
+    properties:
+      uid:
+        type: integer
+        example: 1
+      cid:
+        type: integer
+        example: 42
+      name:
+        type: string
+        example: Jane Smith
+      phone:
+        type: string
+        example: 555-123-4567
+      email:
+        type: string
+        example: jane@example.com
+
+  ContactCreate:
+    type: object
+    required: [name]
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+      email:
+        type: string
+
+  ContactUpdate:
+    type: object
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+      email:
+        type: string
+
+  RegisterRequest:
+    type: object
+    required: [name, email, password]
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+
+  LoginRequest:
+    type: object
+    required: [email, password]
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+        description: JWT token
+      user:
+        $ref: "#/definitions/User"
+
+  Error:
+    type: object
+    properties:
+      status:
+        type: string
+        example: error
+      code:
+        type: string
+        example: INVALID_INPUT
+      message:
+        type: string
+        example: Validation failed
