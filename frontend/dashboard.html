@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Contact Manager</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Your Contacts</h1>
+    <button onclick="logout()">Logout</button>
+
+    <!--Add Contact-->
+    <h2>Add Contact</h2>
+    <input type="text" id="contact-name" placeholder="Name" required>
+    <input type="text" id="contact-phone" placeholder="Phone">
+    <input type="email" id="contact-email" placeholder="Email">
+    <button onclick="addContact()">Add</button>
+
+    <!--Search-->
+    <h2>Search Contacts</h2>
+    <input type="text" id="search-query" placeholder="Search by name" oninput="searchContacts()">
+
+    <!--Contact List-->
+    <h2>Contact List</h2>
+    <ul id="contact-list"></ul>
+
+    <p id="message"></p>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
