@@ -1,0 +1,115 @@
+:root{
+  --bg:#0f172a;
+  --card:#111827;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --accent:#38bdf8;
+  --accent-contrast:#07131a;
+  --danger:#ef4444;
+  --ring:#38bdf880;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  background: radial-gradient(1000px 700px at 10% -10%, #1e293b 0%, #0b1020 35%, #050816 60%, #020510 100%), var(--bg);
+  color:var(--text);
+  min-height:100dvh;
+}
+
+.container{
+  margin-inline:auto;
+  padding:24px;
+  max-width:900px;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 24px;
+  border-bottom:1px solid #1f2937;
+}
+
+.card{
+  background:linear-gradient(180deg, #0f172a 0%, #0b1224 100%);
+  border:1px solid #1f2937;
+  border-radius:16px;
+  padding:20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+h1{font-size:28px;margin:0 0 16px}
+h2{font-size:18px;margin:0 0 12px}
+
+.stack>*+*{margin-top:12px}
+
+label{display:flex;flex-direction:column;gap:6px;font-size:14px}
+input{
+  background:#0b1224;
+  color:var(--text);
+  border:1px solid #243044;
+  border-radius:10px;
+  padding:10px 12px;
+  outline:none;
+}
+input:focus{border-color:var(--accent); box-shadow:0 0 0 4px var(--ring)}
+
+.btn{
+  background:#131c30;
+  color:var(--text);
+  border:1px solid #2a3a58;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.primary{
+  background:linear-gradient(180deg, var(--accent) 0%, #1ca7e9 100%);
+  color:#001018;
+  border:1px solid #1ca7e9;
+}
+
+.hint{margin-top:8px;color:var(--muted)}
+.error{color:var(--danger);min-height:1.2em}
+.muted{color:var(--muted)}
+
+.grid-2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+  margin-bottom:16px;
+}
+.grid-2 button{grid-column: 1 / -1}
+
+.list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.list li{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#0b1224;
+  border:1px solid #243044;
+  border-radius:10px;
+  padding:10px 12px;
+}
+.list .meta{color:var(--muted); font-size:12px}
+.list .row{
+  display:flex; flex-direction:column;
+}
+.list button{
+  background:transparent;
+  color:#fca5a5;
+  border:1px solid #ef4444;
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}

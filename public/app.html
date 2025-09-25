@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contacts — Dashboard</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <h1>Contacts</h1>
+        <button id="logout" class="btn">Log out</button>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h2>Your contacts</h2>
+
+            <form id="add-form" class="grid-2">
+                <input id="c-name" placeholder="Name" required />
+                <input id="c-email" type="email" placeholder="Email" />
+                <input id="c-phone" placeholder="Phone" />
+                <button class="btn primary" type="submit">Add</button>
+            </form>
+
+            <ul id="contacts" class="list"></ul>
+            <p id="contacts-empty" class="muted" hidden>No contacts yet.</p>
+            <p id="contacts-error" class="error" role="alert"></p>
+        </section>
+    </main>
+
+    <script>
+        window.BASE_API = '/index.php';
+    </script>
+    <script src="./app.js" type="module"></script>
+</body>
+
+</html>

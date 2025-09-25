@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contacts — Sign up</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <main class="container">
+        <h1>Contacts</h1>
+
+        <section class="card">
+            <h2>Create account</h2>
+            <form id="signup-form" class="stack">
+                <label>Name
+                    <input type="text" id="name" autocomplete="name" required>
+                </label>
+
+                <label>Email
+                    <input type="email" id="email" autocomplete="username" required>
+                </label>
+
+                <label>Password
+                    <input type="password" id="password" autocomplete="new-password" required>
+                </label>
+
+                <button class="btn primary" type="submit">Sign up</button>
+                <p id="signup-error" class="error" role="alert"></p>
+            </form>
+
+            <p class="hint">Already have an account? <a href="./login.html">Log in</a></p>
+        </section>
+    </main>
+
+    <script>
+        window.BASE_API = '/index.php';
+    </script>
+    <script type="module">
+        const BASE = window.BASE_API;
+        const form = document.getElementById('signup-form');
+        const errEl = document.getElementById('signup-error');
+
+        async function api(path, opts = {}) {
+            const res = await fetch(BASE + path, {
+                method: opts.method || 'GET',
+                headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+                body: opts.body ? JSON.stringify(opts.body) : undefined,
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || data.status === 'error') {
+                const message = data.message || `HTTP ${res.status}`;
+                throw new Error(message);
+            }
+            return data;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errEl.textContent = '';
+            try {
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+
+                await api('/users', { method: 'POST', body: { name, email, password } });
+                // success → back to login
+                window.location.href = './login.html';
+            } catch (err) {
+                errEl.textContent = err.message || 'Signup failed';
+            }
+        });
+    </script>
+</body>
+
+</html>
