@@ -117,6 +117,12 @@ async function listContacts() {
                 try {
                     const id = e.currentTarget.dataset.cid;
                     if (!id) throw new Error('Missing contact id');
+
+                    // Confirmation before deleting
+                    const label = c?.name || c?.email || `contact ${id}`;
+                    const ok = window.confirm(`Delete "${label}"? This cannot be undone.`);
+                    if (!ok) return;
+
                     await deleteContact(id);
                     await listContacts();
                 } catch (err) {
