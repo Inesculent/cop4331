@@ -113,3 +113,31 @@ input:focus{border-color:var(--accent); box-shadow:0 0 0 4px var(--ring)}
   border-radius:8px;
   cursor:pointer;
 }
+
+.card-head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;
+}
+.row-right{
+  grid-column: 1 / -1;
+  display:flex; justify-content:flex-end; gap:10px;
+}
+.btn.neutral{
+  background:#0b1224;
+  color:var(--text);
+  border:1px solid #243044;
+}
+.list .actions{
+  display:flex; gap:8px; align-items:center;
+}
+.list .actions .btn{
+  padding:6px 10px; border-radius:8px;
+}
+.list .edit-inputs{
+  display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:6px;
+}
+.list .edit-actions{
+  display:flex; gap:8px; margin-top:8px;
+}
+
+/* Make sure anything with the hidden attribute is really hidden */
+[hidden] { display: none !important; }

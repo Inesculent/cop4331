@@ -64,12 +64,23 @@ const contactsList = document.getElementById('contacts');
 const contactsEmpty = document.getElementById('contacts-empty');
 const contactsError = document.getElementById('contacts-error');
 const addForm = document.getElementById('add-form');
+const addToggleBtn = document.getElementById('add-toggle');
+const addCancelBtn = document.getElementById('add-cancel');
 
 async function getCurrentUid() {
     // Uses UID stashed after signup/login.
     const uid = localStorage.getItem('uid');
     if (!uid) throw new Error('No UID set; store it after signup/login or expose an endpoint to fetch profile.');
     return parseInt(uid, 10);
+}
+
+function showAddForm(show) {
+    if (!addForm) return;
+    addForm.hidden = !show;
+    if (addToggleBtn) addToggleBtn.disabled = show;
+    if (show) {
+        document.getElementById('c-name')?.focus();
+    }
 }
 
 async function listContacts() {
@@ -88,7 +99,6 @@ async function listContacts() {
         contactsEmpty.hidden = true;
 
         for (const c of items) {
-            // Be defensive about the contact id field name.
             const cid =
                 c?.cid ??
                 c?.id ??
@@ -97,28 +107,37 @@ async function listContacts() {
 
             const li = document.createElement('li');
 
+            // left: name + meta
             const left = document.createElement('div');
             left.className = 'row';
             left.innerHTML = `<strong>${escapeHtml(c.name || '')}</strong>
         <span class="meta">${escapeHtml(c.email || '')}${c?.phone ? ' • ' + escapeHtml(c.phone) : ''}</span>`;
 
-            const del = document.createElement('button');
-            del.type = 'button';
-            del.textContent = 'Delete';
-            del.dataset.cid = cid ? String(cid) : '';
+            // right: actions (Edit / Delete)
+            const actions = document.createElement('div');
+            actions.className = 'actions';
 
+            const editBtn = document.createElement('button');
+            editBtn.type = 'button';
+            editBtn.className = 'btn neutral';
+            editBtn.textContent = 'Edit';
+            editBtn.disabled = !cid;
+
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'btn';
+            delBtn.textContent = 'Delete';
+            delBtn.dataset.cid = cid ? String(cid) : '';
             if (!cid) {
-                // If the API didn’t send an id, disable to avoid /undefined
-                del.disabled = true;
-                del.title = 'Missing contact id from API response';
+                delBtn.disabled = true;
+                delBtn.title = 'Missing contact id from API response';
             }
 
-            del.addEventListener('click', async (e) => {
+            // Delete handler
+            delBtn.addEventListener('click', async (e) => {
                 try {
                     const id = e.currentTarget.dataset.cid;
                     if (!id) throw new Error('Missing contact id');
-
-                    // Confirmation before deleting
                     const label = c?.name || c?.email || `contact ${id}`;
                     const ok = window.confirm(`Delete "${label}"? This cannot be undone.`);
                     if (!ok) return;
@@ -130,7 +149,77 @@ async function listContacts() {
                 }
             });
 
-            li.append(left, del);
+            // Edit handler — inline editor
+            editBtn.addEventListener('click', () => {
+                if (!cid) return;
+                // Build inline editor UI
+                const editor = document.createElement('div');
+                editor.className = 'edit-inputs';
+
+                const nameI = document.createElement('input');
+                nameI.placeholder = 'Name';
+                nameI.value = c.name || '';
+
+                const emailI = document.createElement('input');
+                emailI.type = 'email';
+                emailI.placeholder = 'Email';
+                emailI.value = c.email || '';
+
+                const phoneI = document.createElement('input');
+                phoneI.placeholder = 'Phone';
+                phoneI.value = c.phone || '';
+
+                const editActions = document.createElement('div');
+                editActions.className = 'edit-actions';
+
+                const cancelE = document.createElement('button');
+                cancelE.type = 'button';
+                cancelE.className = 'btn';
+                cancelE.textContent = 'Cancel';
+
+                const saveE = document.createElement('button');
+                saveE.type = 'button';
+                saveE.className = 'btn primary';
+                saveE.textContent = 'Save';
+
+                editActions.append(cancelE, saveE);
+                editor.append(nameI, emailI, phoneI);
+                left.innerHTML = '';      // clear view
+                left.append(editor, editActions);
+
+                // Disable action buttons while editing
+                editBtn.disabled = true;
+                delBtn.disabled = true;
+
+                // Cancel → re-render list
+                cancelE.addEventListener('click', listContacts);
+
+                // Save → PATCH /contacts/{cid}
+                saveE.addEventListener('click', async () => {
+                    try {
+                        const payload = {
+                            name: nameI.value.trim(),
+                            email: emailI.value.trim(),
+                            phone: phoneI.value.trim(),
+                        };
+                        // Remove empty strings so we only send fields the user actually set
+                        Object.keys(payload).forEach(k => {
+                            if (payload[k] === '') delete payload[k];
+                        });
+
+                        await patchContact(cid, payload);
+                        await listContacts();
+                    } catch (err) {
+                        showContactsError(err);
+                    }
+                });
+
+                // Focus first input
+                nameI.focus();
+            });
+
+            actions.append(editBtn, delBtn);
+            li.append(left, actions);
             contactsList.appendChild(li);
         }
     } catch (err) {
@@ -151,6 +240,7 @@ async function addContact(e) {
         const phone = document.getElementById('c-phone').value.trim();
         await api(`/users/${uid}/contacts`, { method: 'POST', body: { name, email, phone } });
         e.target.reset();
+        showAddForm(false);
         listContacts();
     } catch (err) {
         showContactsError(err);
@@ -161,19 +251,37 @@ async function deleteContact(cid) {
     await api(`/contacts/${encodeURIComponent(String(cid))}`, { method: 'DELETE' });
 }
 
+async function patchContact(cid, body) {
+    // Uses API PATCH /contacts/{cid}
+    await api(`/contacts/${encodeURIComponent(String(cid))}`, {
+        method: 'PATCH',
+        body
+    });
+}
+
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
         try {
             await api('/auth/logout', { method: 'POST' });
         } finally {
-            // Clear any cached UID and go back to login
             localStorage.removeItem('uid');
             window.location.href = './index.html';
         }
     });
 }
 
-if (addForm) addForm.addEventListener('submit', addContact);
+// Add-form wiring
+if (addForm) {
+    // ensure hidden on load
+    addForm.hidden = true;
+    addForm.addEventListener('submit', addContact);
+}
+if (addToggleBtn) {
+    addToggleBtn.addEventListener('click', () => showAddForm(true));
+}
+if (addCancelBtn) {
+    addCancelBtn.addEventListener('click', () => showAddForm(false));
+}
 
 // Simple HTML escaping
 function escapeHtml(s) {
