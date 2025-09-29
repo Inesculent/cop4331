@@ -6,6 +6,9 @@ vendor/
 .env.local
 .env.production
 
+# Configuration files with sensitive data
+src/config.php
+
 # IDE files
 .vscode/
 .idea/

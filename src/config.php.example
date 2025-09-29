@@ -1,0 +1,26 @@
+<?php
+return [
+    'db' => [
+        'host' => $_ENV['DB_HOST'] ?? 'localhost',
+        'port' => (int)($_ENV['DB_PORT'] ?? 3306),
+        'name' => $_ENV['DB_NAME'] ?? 'contacts_app',
+        'user' => $_ENV['DB_USER'] ?? 'root',
+        'pass' => $_ENV['DB_PASS'] ?? 'your_password_here',
+        'charset' => 'utf8mb4',
+    ],
+
+    'auth' => [
+        'jwt_secret' => $_ENV['JWT_SECRET'] ?? 'your_secure_jwt_secret_here',
+        'issuer' => $_ENV['JWT_ISSUER'] ?? 'https://your-domain.com/project/',
+        'audience' => $_ENV['JWT_AUDIENCE'] ?? 'https://contacts.api',
+        'access_ttl' => (int)($_ENV['JWT_TTL'] ?? 3600), // 1 hour
+    ],
+
+    // Development settings
+    'dev' => [
+        'show_cookies' => $_ENV['DEV_MODE'] ?? false, // Set to true for development
+        'secure_cookies' => $_ENV['SECURE_COOKIES'] ?? true, // Set to false for local development
+    ],
+
+    'sql_root' => __DIR__ . '/../public/sql',
+];
