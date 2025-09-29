@@ -2,6 +2,8 @@
 
 A RESTful API for managing users and their contacts, built with PHP, JWT authentication, and MySQL.
 
+A working demo can be found at: _https://inesculent.dev/project/public/login.html_
+
 ## Features
 
 - **User Management**: Create, read, update, and delete users
