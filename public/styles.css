@@ -139,5 +139,27 @@ input:focus{border-color:var(--accent); box-shadow:0 0 0 4px var(--ring)}
   display:flex; gap:8px; margin-top:8px;
 }
 
+.search-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#search-input {
+    background: #0b1224;
+    color: var(--text);
+    border: 1px solid #243044;
+    border-radius: 10px;
+    padding: 8px 12px;
+    width: 200px;
+    outline: none;
+}
+
+#search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--ring);
+}
+
+
 /* Make sure anything with the hidden attribute is really hidden */
 [hidden] { display: none !important; }

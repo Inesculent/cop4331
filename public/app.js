@@ -58,7 +58,7 @@ if (loginForm) {
 }
 
 
-// --- DASHBOARD PAGE logic ---
+// DASHBOARD PAGE logic
 const logoutBtn = document.getElementById('logout');
 const contactsList = document.getElementById('contacts');
 const contactsEmpty = document.getElementById('contacts-empty');
@@ -227,6 +227,91 @@ async function listContacts() {
     }
 }
 
+const searchInput = document.getElementById('search-input');
+
+if (searchInput) {
+    searchInput.addEventListener('input', async (e) => {
+        const query = e.target.value.toLowerCase();
+        await searchContacts(query);
+    });
+}
+
+async function searchContacts(query) {
+    const uid = await getCurrentUid();
+    const res = await api(`/users/${uid}/contacts`, { method: 'GET' });
+
+    const items = res?.data || [];
+    const filteredItems = items.filter(contact => {
+        return (
+            contact.name.toLowerCase().includes(query) ||
+            (contact.email && contact.email.toLowerCase().includes(query)) ||
+            (contact.phone && contact.phone.toLowerCase().includes(query))
+        );
+    });
+
+    renderContacts(filteredItems);
+}
+
+function renderContacts(items) {
+    if (!contactsList) return;
+    contactsError.textContent = '';
+    contactsList.innerHTML = '';
+
+    if (!items.length) {
+        contactsEmpty.hidden = false;
+        return;
+    }
+    contactsEmpty.hidden = true;
+
+    for (const c of items) {
+        const cid = c?.cid ?? c?.id ?? c?.contact_id ?? c?.contactId;
+
+        const li = document.createElement('li');
+        const left = document.createElement('div');
+        left.className = 'row';
+        left.innerHTML = `<strong>${escapeHtml(c.name || '')}</strong>
+        <span class="meta">${escapeHtml(c.email || '')}${c?.phone ? ' • ' + escapeHtml(c.phone) : ''}</span>`;
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const editBtn = document.createElement('button');
+        editBtn.type = 'button';
+        editBtn.className = 'btn neutral';
+        editBtn.textContent = 'Edit';
+
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'btn';
+        delBtn.textContent = 'Delete';
+        delBtn.dataset.cid = cid ? String(cid) : '';
+        if (!cid) {
+            delBtn.disabled = true;
+            delBtn.title = 'Missing contact id from API response';
+        }
+
+        delBtn.addEventListener('click', async (e) => {
+            try {
+                const id = e.currentTarget.dataset.cid;
+                if (!id) throw new Error('Missing contact id');
+                const label = c?.name || c?.email || `contact ${id}`;
+                const ok = window.confirm(`Delete "${label}"? This cannot be undone.`);
+                if (!ok) return;
+
+                await deleteContact(id);
+                await listContacts();
+            } catch (err) {
+                showContactsError(err);
+            }
+        });
+
+        actions.append(editBtn, delBtn);
+        li.append(left, actions);
+        contactsList.appendChild(li);
+    }
+}
+
+
 function showContactsError(err) {
     if (contactsError) contactsError.textContent = err?.message || 'Error loading contacts';
 }
@@ -270,7 +355,6 @@ if (logoutBtn) {
     });
 }
 
-// Add-form wiring
 if (addForm) {
     // ensure hidden on load
     addForm.hidden = true;
